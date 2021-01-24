@@ -13,7 +13,7 @@ class Router
     /**
      * Set valid methods
      */
-    protected $validMethods = ['GET', 'POST'];
+    protected $validMethods = ['GET', 'POST', 'PUT', 'DELETE'];
 
     /**
      * Set routes placeholder
@@ -21,6 +21,8 @@ class Router
     protected $routes = [
         'GET' => [],
         'POST' => [],
+        'PUT' => [],
+        'DELETE' => [],
     ];
 
     /**
@@ -53,6 +55,7 @@ class Router
     {
         // destroy $routes variable
         unset($this->routes);
+
         // destroy $attributes variable
         unset($this->attributes);
 
@@ -99,6 +102,30 @@ class Router
     }
 
     /**
+     * Set PUT routes
+     *
+     * @param string $uri
+     * @param string|callabled $controller
+     */
+    protected function put(string $uri, $controller)
+    {
+        $uri = trim($uri, '/'); // remove extra forward slashes (/)
+        $this->routes['PUT'][$uri] = $controller;
+    }
+
+    /**
+     * Set DELETE routes
+     *
+     * @param string $uri
+     * @param string|callabled $controller
+     */
+    protected function delete(string $uri, $controller)
+    {
+        $uri = trim($uri, '/'); // remove extra forward slashes (/)
+        $this->routes['DELETE'][$uri] = $controller;
+    }
+
+    /**
      * process route
      *
      * @param string $uri
@@ -106,6 +133,9 @@ class Router
      */
     public function direct(string $uri, string $method)
     {
+        // check if user defined a method else $method
+        $method = $_POST['_method'] ?? $method;
+
         // validate request method
         if (!$this->isValidMethod(strtoupper($method))) {
             throw new Exception("Invalid request method");
