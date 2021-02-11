@@ -1,26 +1,12 @@
-# PHP-Router
-> Simple PHP router by Angelo Arcillas
+# PHP-Router-Request
+> Simple PHP router and request by Angelo Arcillas
 
 <br>
 
 ## Example Usage
 
-**index.php**
-```php
-use Http\Request;
-use Http\Router;
 
-// Load autoload
-require 'autoload.php';
-
-// Start Router
-Router::load('App/routes.php')
-    ->direct(Request::uri(), Request::method());
-// load(file path to load route)
-// direct(request uri, request method)
-```
-
-**routes.php**
+# Router
 ```php
 # $router->method(url, callback);
 
@@ -48,6 +34,7 @@ $router->get('/age/:int/name/foo', function ($age, $name) {
 $router->post('/any:/any', 'PagesController@anything');
 ```
 
+## Request
 ```php
 use Http\Request;
 
