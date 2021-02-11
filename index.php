@@ -7,11 +7,15 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-use Http\Request;
-use Http\Router;
+// use Request and Router namespace
+use \Http\Request;
+use \Http\Router;
 
 // load autoload
 require 'autoload.php';
+
+// load helper functions
+require 'helpers.php';
 
 /**
  * Init Router

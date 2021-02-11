@@ -1,4 +1,5 @@
 <?php
+
 namespace Http;
 
 use \Exception;
@@ -17,6 +18,8 @@ class Router
 
     /**
      * Set routes placeholder
+     *
+     * TODO: implement cache?
      */
     protected $routes = [
         'GET' => [],
@@ -55,10 +58,8 @@ class Router
     {
         // destroy $routes variable
         unset($this->routes);
-
         // destroy $attributes variable
         unset($this->attributes);
-
         ob_end_flush();
     }
 
@@ -71,9 +72,7 @@ class Router
     public static function load(string $file): object
     {
         $router = new static; // create instance
-
         require $file; // set $routes
-
         return $router; // return instace
     }
 
@@ -83,10 +82,11 @@ class Router
      * @param string $uri
      * @param string|callable $controller
      */
-    protected function get(string $uri, $controller)
+    protected function get(string $url, $controller)
     {
-        $uri = trim($uri, '/'); // remove extra forward slashes (/)
-        $this->routes['GET'][$uri] = $controller;
+        // remove extra forward slashes (/)
+        $url = trim($url, '/');
+        $this->routes['GET'][$url] = $controller;
     }
 
     /**
@@ -95,10 +95,11 @@ class Router
      * @param string $uri
      * @param string|callabled $controller
      */
-    protected function post(string $uri, $controller)
+    protected function post(string $url, $controller)
     {
-        $uri = trim($uri, '/'); // remove extra forward slashes (/)
-        $this->routes['POST'][$uri] = $controller;
+        // remove extra forward slashes (/)
+        $url = trim($url, '/');
+        $this->routes['POST'][$url] = $controller;
     }
 
     /**
@@ -107,10 +108,11 @@ class Router
      * @param string $uri
      * @param string|callabled $controller
      */
-    protected function put(string $uri, $controller)
+    protected function put(string $url, $controller)
     {
-        $uri = trim($uri, '/'); // remove extra forward slashes (/)
-        $this->routes['PUT'][$uri] = $controller;
+        // remove extra forward slashes (/)
+        $url = trim($url, '/');
+        $this->routes['PUT'][$url] = $controller;
     }
 
     /**
@@ -119,25 +121,26 @@ class Router
      * @param string $uri
      * @param string|callabled $controller
      */
-    protected function delete(string $uri, $controller)
+    protected function delete(string $url, $controller)
     {
-        $uri = trim($uri, '/'); // remove extra forward slashes (/)
-        $this->routes['DELETE'][$uri] = $controller;
+        // remove extra forward slashes (/)
+        $url = trim($url, '/');
+        $this->routes['DELETE'][$url] = $controller;
     }
 
     /**
      * process route
      *
-     * @param string $uri
+     * @param string $url
      * @param string $method
      */
-    public function direct(string $uri, string $method)
+    public function direct(string $url, string $method)
     {
         // check if user defined a method else $method
         $method = $_POST['_method'] ?? $method;
 
         // validate request method
-        if (!$this->isValidMethod(strtoupper($method))) {
+        if (!$this->isValidMethod($method)) {
             throw new Exception("Invalid request method");
         }
 
@@ -146,44 +149,34 @@ class Router
 
             // check for wildcards
             if (str_contains($route, ':')) {
-
                 // wildcard to search
                 $searches = array_keys($this->patterns);
-
                 // regex to replace wildcard
                 $replaces = array_values($this->patterns);
-
                 // create regex to match uri
-                $regex = '#^' . str_replace($searches, $replaces, $route) . '$#';
+                $regex = str_replace($searches, $replaces, $route);
 
                 // match regex with route
-                if (preg_match($regex, $uri, $values)) {
-
+                if (preg_match("#^{$regex}$#", $url, $values)) {
                     // get route wildcard values
                     $this->params = array_slice($values, 1);
-
                 } else {
                     continue; // next loop
                 }
             } else {
                 // if not matched; continue
-                if ($uri !== $route) {
-                    continue;
-                }
+                if ($url !== $route) continue;
             }
 
             // if controller is a function
             if (is_callable($controller)) {
-
                 // execute callable
                 $controller(...$this->attributes);
                 exit;
             }
 
             // call controller
-            return $this->callAction(
-                ...explode('@', $controller)
-            );
+            return $this->callAction($controller);
         }
 
         // No routes defined
@@ -200,7 +193,11 @@ class Router
     protected function isValidMethod(string $method): bool
     {
         // compare & use strict comparison
-        return in_array($method, $this->validMethods, true);
+        return in_array(
+            strtoupper($method),
+            $this->validMethods,
+            true // use strict comparison
+        );
     }
 
     /**
@@ -209,14 +206,18 @@ class Router
      * @param string $controller
      * @param string $action
      */
-    protected function callAction(string $controller, string $action, array $attributes = [])
+    protected function callAction(string $controller)
     {
+        // set controller and method name
+        [$controller, $action] = [...explode('@', $controller), null];
         // set controller class namspace
         $class = $this->controllerNamespace . $controller;
 
         // check if class exist
         if (!class_exists($class)) {
-            throw new Exception("Controller: \"{$class}\" doesn't exists.");
+            throw new Exception("
+                Controller: \"{$class}\" doesn't exists.
+            ");
         }
 
         // create object
@@ -224,7 +225,10 @@ class Router
 
         // check if method exist
         if (!method_exists($object, $action)) {
-            throw new Exception("Method: \"{$action}\" is not defined on {$class}.");
+            $action = $action ?? "__invoke";
+            throw new Exception("
+                Method: \"{$action}()\" is not defined on {$class}.
+            ");
         }
 
         // call method from class
@@ -236,9 +240,9 @@ class Router
     {
         // if previous uri exist
         if (isset($_SERVER['HTTP_REFERER'])) {
-
             // redirect to previous uri
             header("location: {$_SERVER['HTTP_REFERER']}", true, 302);
+            exit;
         }
 
         // return null if there is no previous uri
