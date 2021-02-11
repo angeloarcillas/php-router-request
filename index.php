@@ -1,20 +1,23 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types=1);
 
 // Check if session started
 if (session_status() == PHP_SESSION_NONE) {
-    session_start(); // Start session
+    session_start();
 }
 
 use Http\Request;
 use Http\Router;
 
-// Load autoload
+// load autoload
 require 'autoload.php';
 
-// Start Router
-Router::load('App/routes.php')
-    ->direct(Request::uri(), Request::method());
-// load(file path to load route)
-// direct(request uri, request method)
+/**
+ * Init Router
+ *
+ * load() - set routes
+ * direct() - match then execute route
+ */
+Router::load('src/routes.php')
+    ->direct(Request::url(), Request::method());

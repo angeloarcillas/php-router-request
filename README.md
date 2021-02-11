@@ -46,3 +46,37 @@ $router->get('/age/:int/name/foo', function ($age, $name) {
 
 // uri = /any/abc123!@#
 $router->post('/any:/any', 'PagesController@anything');
+```
+
+```php
+use Http\Request;
+
+$request = new Request();
+
+// validate request fields then return validated fields
+$request->validate([
+    'name' => ['string', 'min:5', 'max:255'],
+    'email' => ['required', 'email']
+]);
+
+// return $request->attributes variable
+$request->all();
+
+// return all $_GET
+$request->query();
+
+// call __get() magic method
+$request->foo;
+
+// call __set() magic method
+$request->bar = "baz";
+
+// return request URI
+Request::uri();
+
+// return request method
+Request::method();
+
+// return all $_REQUEST
+Request::request();
+```
