@@ -1,3 +1,5 @@
+# !NOTE: check https://github.com/zerexei/php-core for updated version
+
 # PHP-Router-Request
 > Simple PHP router and request by Angelo Arcillas
 
