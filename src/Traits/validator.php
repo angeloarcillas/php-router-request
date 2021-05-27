@@ -86,7 +86,7 @@ trait Validator
             }
 
             // append validated rules
-            array_push($validated, [$key => $value]);
+            $validated[$key] = $value;
         }
 
         // check if field has error
