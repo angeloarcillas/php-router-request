@@ -1,8 +1,8 @@
 <?php
-namespace Http;
+namespace App\Http;
 
 use \Exception;
-use \Http\Traits\Validator;
+use \App\Http\Traits\Validator;
 
 class Request
 {
@@ -21,7 +21,7 @@ class Request
     /**
      * @return string Request uri w/out ?(Query string)
      */
-    public static function uri(): string
+    public static function url(): string
     {
         return reset(...[explode('?',
             trim($_SERVER['REQUEST_URI'], '/')

@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Http\Traits;
+namespace App\Http\Traits;
 
 /**
  * Request Validator

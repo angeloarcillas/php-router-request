@@ -1,24 +1,30 @@
 <?php
 
+// no type coercion allowed
 declare(strict_types=1);
 
-// Check if session started
-if (session_status() == PHP_SESSION_NONE) {
+// check if session started
+if (session_status() === PHP_SESSION_NONE) {
+    // start a session
     session_start();
 }
 
-// use Request and Router namespace
-use \Http\Request;
-use \Http\Router;
+// import Request and Router class
+use \App\Http\Request;
+use \App\Http\Router;
 
-// load autoload
-require 'autoload.php';
+// import autoloader
+require 'vendor/autoload.php';
 
-// load helper functions
-require 'helpers.php';
+// import helper functions
+require 'src/helpers.php';
+
+// Set app configs
+$config = require 'config.php';
+define('CONFIG', $config);
 
 /**
- * Init Router
+ * Boot Router
  *
  * load() - set routes
  * direct() - match then execute route
