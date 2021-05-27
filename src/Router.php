@@ -4,6 +4,7 @@ namespace SimpleRouter;
 
 use \Exception;
 
+// TODO: use array for controller [UserController::class, 'method']
 class Router
 {
     /**
@@ -14,7 +15,7 @@ class Router
     /**
      *  Controller namespace
      */
-    protected string $controllerNamespace = "App\\Controllers\\";
+    protected string $controllerNamespace = "\\App\\Controllers\\";
 
     /**
      * Valid methods
