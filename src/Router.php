@@ -166,7 +166,7 @@ class Router
                 if (preg_match("#^{$regex}$#", $url, $values)) {
                     // pop the full url
                     // get route wildcard values
-                    $this->params = array_slice($values, 1);
+                    $this->attributes = array_slice($values, 1);
                 } else {
                     // next route
                     continue;
