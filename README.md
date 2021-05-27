@@ -1,5 +1,5 @@
 # PHP-Router-Request
-> Simple PHP router and request by Angelo Arcillas
+> Simple PHP router and request
 
 <br>
 
