@@ -16,7 +16,7 @@ if (!function_exists('redirect')) {
     // check if no $path
     if (!$path) {
       // return Router class
-      return new \Http\Router();
+      return new \App\Http\Router();
     }
 
     // check if headers already sent
@@ -48,7 +48,7 @@ if (!function_exists("request")) {
   function request(?string $key = null)
   {
     // create Request instance
-    $request = new \Http\Request();
+    $request = new App\Http\Request();
 
     // return request or request class
     return $key ?  $request->$key : $request;
