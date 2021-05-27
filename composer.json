@@ -1,5 +1,5 @@
 {
-  "name": "zeretei/router-request",
+  "name": "zerexei/simplerouter",
   "type": "library",
   "description": "Simple Router and Request for PHP ^8.0",
   "keywords": [
