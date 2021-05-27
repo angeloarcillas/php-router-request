@@ -16,7 +16,7 @@ use \SimpleRouter\Request;
 require 'vendor/autoload.php';
 
 // init router
-Router::load('routes.php')
+Router::load('routes.php') // set the routes file
     ->direct(Request::url(), Request::method());
 
 //# routes.php
@@ -27,7 +27,7 @@ $router->host = 'pkg';
 // set routes
 $router->get('/', function() {
     echo "Hello World!";
-})
+});
 ```
 
 # Router
