@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http;
+namespace SimpleRouter;
 
 use \Exception;
-use \App\Http\Traits\Validator;
+use \SimpleRouter\Traits\Validator;
+
+require 'helpers.php';
 
 class Request
 {
