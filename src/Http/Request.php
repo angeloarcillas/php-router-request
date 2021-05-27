@@ -3,11 +3,11 @@
 namespace App\Http;
 
 use \Exception;
-// use \App\Http\Traits\Validator;
+use \App\Http\Traits\Validator;
 
 class Request
 {
-    // use Validator;
+    use Validator;
 
     /**
      * Set attributes container

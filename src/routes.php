@@ -3,6 +3,8 @@
 $router->host = "php-router-request";
 
 $router->get('/', function () {
-  die(var_dump(request()));
+  die(var_dump(request()->validate([
+    'name' => 'required'
+  ])));
   echo "Hello World!";
 });
