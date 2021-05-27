@@ -1,7 +1,5 @@
-# !NOTE: check https://github.com/zerexei/php-core for updated version
-
 # PHP-Router-Request
-> Simple PHP router and request by Angelo Arcillas
+> Simple PHP router and request
 
 <br>
 
@@ -11,6 +9,9 @@
 # Router
 ```php
 # $router->method(url, callback);
+
+// set host
+$router->host = "app-host";
 
 // set namespace path to controller
 $router->controllerNamespace = 'Path\\To\\Controller';
