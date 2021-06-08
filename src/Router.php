@@ -3,6 +3,7 @@
 namespace SimpleRouter;
 
 use \Exception;
+use SimpleRouter\Traits\RouterMethod;
 use \SimpleRouter\Traits\RouterTrait;
 
 /**
@@ -13,6 +14,7 @@ use \SimpleRouter\Traits\RouterTrait;
 class Router
 {
     use RouterTrait;
+    use RouterMethod;
 
     /**
      * Host
@@ -155,20 +157,6 @@ class Router
 
         // call method from controller class with params
         return $object->$action(...$this->attributes);
-    }
-
-    /**
-     * Check if request method is valid
-     * @param string $method
-     * @return bool
-     */
-    protected function isValidMethod(string $method): bool
-    {
-        return in_array(
-            strtoupper($method),
-            $this->validMethods,
-            true // use strict comparison
-        );
     }
 
     public function __construct()

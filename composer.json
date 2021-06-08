@@ -24,7 +24,8 @@
   },
   "autoload": {
     "psr-4": {
-      "SimpleRouter\\": "src/"
+      "SimpleRouter\\": "src/",
+      "App\\": "app/"
     }
   }
 }

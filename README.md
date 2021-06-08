@@ -13,30 +13,50 @@
 use \SimpleRouter\Router;
 use \SimpleRouter\Request;
 
-require 'vendor/autoload.php';
+require __DIR__ . 'vendor/autoload.php';
 
 // init router
-Router::load('routes.php') // set the routes file
-    ->direct(Request::url(), Request::method());
+$router::init();
+// setup routes
+require_once 'routes.php';
+// execute router
+$router->run(Request::url(), Request::method());
+
 
 //# routes.php
 
+use App\Controllers\UserController;
+
 // set host
-$router->host = 'pkg';
+$router->setHost('MyHost');
 
 // set routes
 $router->get('/', function() {
     echo "Hello World!";
 });
+$router->post('/users', [UserController::class]);
+$router->put('/users/update', [UserController::class], 'update');
+$router->delete('/users/:int/destroy', function($id) {
+    echo $id;
+});
+
+
+//# .htaccess
+
+// always start from index.php
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule ^ index.php [L]
+</IfModule>
 ```
 
 # Router
 
 ```php
 // set host
-$router->host;
-// set the controller namespace
-$router->controllerNamespace;
+$router->setHost();
 // set get method route
 $router->get($url, $controller);
 // set post method route

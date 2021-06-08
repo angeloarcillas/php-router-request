@@ -39,7 +39,7 @@ class Request
     public static function url(): string
     {
         // set url
-        $url = $_SERVER['REQUEST_URI'];
+        $url = filter_var($_SERVER['REQUEST_URI'], FILTER_SANITIZE_URL);
         // url with out query string
         $baseUrl = explode('?', $url)[0];
         // trim extra slashes then return url

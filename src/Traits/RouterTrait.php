@@ -20,6 +20,11 @@ trait RouterTrait
         }
     }
 
+    public function setHost($string)
+    {
+        $this->host = $string;
+    }
+
     // // !NOTE: WIP
     // protected $methods = [];
 
