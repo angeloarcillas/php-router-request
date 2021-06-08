@@ -9,7 +9,8 @@ use \SimpleRouter\Traits\RouterTrait;
 /**
  * TODO: 
  * 1. cache
- * 2. setHost()
+ * 2. set attributes correct value type
+ * 3. Refactor
  */
 class Router
 {
