@@ -3,10 +3,12 @@
 namespace SimpleRouter;
 
 use \Exception;
+use \SimpleRouter\Traits\RouterTrait;
 
-// TODO: use array for controller [UserController::class, 'method']
 class Router
 {
+    use RouterTrait;
+
     /**
      * Host
      */
@@ -250,19 +252,6 @@ class Router
         array_push($this->validMethods, ...$methods);
         foreach ($methods as $method) {
             $this->routes[$method] = [];
-        }
-    }
-
-    /**
-     * Redirect back to previous url
-     */
-    public function back(): void
-    {
-        // check if previous uri exist
-        if (isset($_SERVER["HTTP_REFERER"])) {
-            // redirect to previous url
-            header("location: {$_SERVER["HTTP_REFERER"]}", true, 302);
-            exit;
         }
     }
 
