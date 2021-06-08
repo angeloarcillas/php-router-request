@@ -12,12 +12,12 @@ class Router
     /**
      * Host
      */
-    protected string $host = "/";
+    protected static string $host = "/";
 
     /**
      *  Controller namespace
      */
-    protected string $controllerNamespace = "\\App\\Controllers\\";
+    protected static string $controllerNamespace = "\\App\\Controllers\\";
 
     /**
      * Valid methods

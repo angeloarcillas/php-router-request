@@ -19,4 +19,14 @@ trait RouterTrait
       exit;
     }
   }
+
+  public function setHost(string $newHost)
+  {
+    static::$host = $newHost;
+  }
+
+  public function setControllerNamespace(string $newControllerNamespace)
+  {
+    static::$controllerNamespace = $newControllerNamespace;
+  }
 }
