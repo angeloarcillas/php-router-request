@@ -5,29 +5,31 @@ namespace SimpleRouter;
 use \Exception;
 use \SimpleRouter\Traits\RouterTrait;
 
+/**
+ * TODO: 
+ * 1. cache
+ * 2. setHost()
+ */
 class Router
 {
     use RouterTrait;
 
     /**
      * Host
+     *
+     * (optional) Define a specific host
      */
-    protected static string $host = "/";
-
-    /**
-     *  Controller namespace
-     */
-    protected static string $controllerNamespace = "\\App\\Controllers\\";
+    protected string $host = "/";
 
     /**
      * Valid methods
+     * 
+     * valid request methods
      */
     protected array $validMethods = ["GET", "POST", "PUT", "DELETE"];
 
     /**
      * Routes container
-     *
-     * TODO: implement cache?
      */
     protected array $routes = [
         "GET" => [],
@@ -38,12 +40,12 @@ class Router
     ];
 
     /**
-     *  Routes attribute container
+     * URL parameters container
      */
     protected array $attributes = [];
 
     /**
-     *  Regex pattern for routes with wildcars
+     * Available regex URL parameter wildcard
      */
     protected array $patterns = [
         // any numbers
@@ -56,85 +58,14 @@ class Router
         ":any" => "(.+)",
     ];
 
-    /**
-     * Routes
+    /** 
+     * Router instance
      *
-     * @param string $file
      * @return Router
      */
-    public static function load(string $file): Router
+    public static function init(): Router
     {
-        // create Router instance
-        $router = new static;
-        // set $routes
-        require $file;
-        // return Router instace
-        return $router;
-    }
-
-    /**
-     * GET routes
-     *
-     * @param string $uri
-     * @param string|callable $controller
-     */
-    protected function get(string $url, string|callable $controller)
-    {
-        // remove extra forward slashes (/)
-        $url = trim($this->host . $url, "/");
-        $this->routes["GET"][$url] = $controller;
-    }
-
-    /**
-     * POST routes
-     *
-     * @param string $uri
-     * @param string|callabled $controller
-     */
-    protected function post(string $url, string|callable $controller)
-    {
-        // remove extra forward slashes (/)
-        $url = trim($this->host . $url, "/");
-        $this->routes["POST"][$url] = $controller;
-    }
-
-    /**
-     * PUT routes
-     *
-     * @param string $uri
-     * @param string|callabled $controller
-     */
-    protected function put(string $url, string|callable $controller)
-    {
-        // remove extra forward slashes (/)
-        $url = trim($this->host . $url, "/");
-        $this->routes["PUT"][$url] = $controller;
-    }
-
-    /**
-     * PATCH routes
-     *
-     * @param string $uri
-     * @param string|callabled $controller
-     */
-    protected function patch(string $url, string|callable $controller)
-    {
-        // remove extra forward slashes (/)
-        $url = trim($this->host . $url, "/");
-        $this->routes["PATCH"][$url] = $controller;
-    }
-
-    /**
-     * DELETE routes
-     *
-     * @param string $uri
-     * @param string|callabled $controller
-     */
-    protected function delete(string $url, string|callable $controller)
-    {
-        // remove extra forward slashes (/)
-        $url = trim($this->host . $url, "/");
-        $this->routes["DELETE"][$url] = $controller;
+        return new static;
     }
 
     /**
@@ -143,7 +74,7 @@ class Router
      * @param string $url
      * @param string $method
      */
-    public function direct(string $url, string $method): mixed
+    public function run(string $url, string $method)
     {
         // check if user defined a method else $method
         $method = $_POST["_method"] ?? $method;
@@ -194,6 +125,39 @@ class Router
     }
 
     /**
+     * Execute action
+     *
+     * @param string $controller
+     * @param string $action
+     */
+    protected function callAction(array $controller)
+    {
+        // set controller and method
+        [$controller, $action] = [...$controller, null];
+
+        // check if class doesn't exist
+        if (!class_exists($controller)) {
+            throw new Exception("Controller: \"{$controller}\" doesn't exists.");
+        }
+
+        // create object
+        $object = new $controller();
+
+        // if no method then use __invoke
+        $action = $action ?? "__invoke";
+
+        // check if method doesn't exist
+        if (!method_exists($controller, $action)) {
+            throw new Exception("
+            Method: \"{$action}()\" is not defined on {$controller}.
+            ");
+        }
+
+        // call method from controller class with params
+        return $object->$action(...$this->attributes);
+    }
+
+    /**
      * Check if request method is valid
      * @param string $method
      * @return bool
@@ -205,54 +169,6 @@ class Router
             $this->validMethods,
             true // use strict comparison
         );
-    }
-
-    /**
-     * Execute action
-     *
-     * @param string $controller
-     * @param string $action
-     */
-    protected function callAction(string $controller)
-    {
-        // set controller and method
-        [$controller, $action] = [...explode("@", $controller), null];
-        // set controller class namspace
-        $class = $this->controllerNamespace . $controller;
-
-        // check if class doesn't exist
-        if (!class_exists($class)) {
-            throw new Exception("Controller: \"{$class}\" doesn't exists.");
-        }
-
-        // create object
-        $object = new $class();
-
-        // if no method then use __invoke
-        $action = $action ?? "__invoke";
-
-        // check if method doesn't exist
-        if (!method_exists($object::class, $action)) {
-            throw new Exception("
-            Method: \"{$action}()\" is not defined on {$class}.
-            ");
-        }
-
-        // call method from controller class with params
-        return $object->$action(...$this->attributes);
-    }
-
-    /**
-     * !NOTE: Work in progress
-     * TODO: create a function for every added method, if possible?
-     * Add supported request method
-     */
-    protected function addSupportedMethod(string ...$methods)
-    {
-        array_push($this->validMethods, ...$methods);
-        foreach ($methods as $method) {
-            $this->routes[$method] = [];
-        }
     }
 
     public function __construct()
