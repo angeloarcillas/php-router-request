@@ -255,22 +255,6 @@ class Router
         }
     }
 
-    /**
-     * Set host
-     */
-    protected static function setHost(string $newHost): void
-    {
-        static::$host = $newHost;
-    }
-
-    /**
-     * set controller namespace
-     */
-    protected static function setControllerNamespace(string $newControllerNamespace): void
-    {
-        static::$controllerNamespace = $newControllerNamespace;
-    }
-
     public function __construct()
     {
         // start buffer
