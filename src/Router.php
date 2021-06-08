@@ -12,12 +12,12 @@ class Router
     /**
      * Host
      */
-    protected string $host = "/";
+    protected static string $host = "/";
 
     /**
      *  Controller namespace
      */
-    protected string $controllerNamespace = "\\App\\Controllers\\";
+    protected static string $controllerNamespace = "\\App\\Controllers\\";
 
     /**
      * Valid methods
@@ -253,6 +253,22 @@ class Router
         foreach ($methods as $method) {
             $this->routes[$method] = [];
         }
+    }
+
+    /**
+     * Set host
+     */
+    protected function setHost(string $newHost): void
+    {
+        static::$host = $newHost;
+    }
+
+    /**
+     * set controller namespace
+     */
+    protected function setControllerNamespace(string $newControllerNamespace): void
+    {
+        static::$controllerNamespace = $newControllerNamespace;
     }
 
     public function __construct()
