@@ -258,7 +258,7 @@ class Router
     /**
      * Set host
      */
-    protected function setHost(string $newHost): void
+    protected static function setHost(string $newHost): void
     {
         static::$host = $newHost;
     }
@@ -266,7 +266,7 @@ class Router
     /**
      * set controller namespace
      */
-    protected function setControllerNamespace(string $newControllerNamespace): void
+    protected static function setControllerNamespace(string $newControllerNamespace): void
     {
         static::$controllerNamespace = $newControllerNamespace;
     }
