@@ -4,6 +4,7 @@ namespace SimpleRouter;
 
 use \Exception;
 
+// TODO: use array for controller [UserController::class, 'method']
 class Router
 {
     /**
@@ -14,7 +15,7 @@ class Router
     /**
      *  Controller namespace
      */
-    protected string $controllerNamespace = "App\\Controllers\\";
+    protected string $controllerNamespace = "\\App\\Controllers\\";
 
     /**
      * Valid methods
@@ -165,7 +166,7 @@ class Router
                 if (preg_match("#^{$regex}$#", $url, $values)) {
                     // pop the full url
                     // get route wildcard values
-                    $this->params = array_slice($values, 1);
+                    $this->attributes = array_slice($values, 1);
                 } else {
                     // next route
                     continue;
