@@ -1,31 +1,31 @@
 {
-  "name": "zerexei/simplerouter",
-  "type": "library",
-  "description": "Simple Router and Request for PHP ^8.0",
-  "keywords": [
-    "php",
-    "router",
-    "request",
-    "http",
-    "https"
-  ],
-  "homepage": "https://github.com/zerexei/php-router-request",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Angelo Arcillas",
-      "email": "angeloarcillas64@gmail.com",
-      "role": "Web Developer",
-      "homepage": "https://github.com/zerexei"
+    "name": "zerexei/simplerouter",
+    "type": "library",
+    "description": "Simple Router and Request for PHP ^8.0",
+    "keywords": [
+        "php",
+        "router",
+        "request",
+        "http",
+        "https"
+    ],
+    "homepage": "https://github.com/zerexei/php-router-request",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Angelo Arcillas",
+            "email": "angeloarcillas64@gmail.com",
+            "role": "Web Developer",
+            "homepage": "https://github.com/zerexei"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "SimpleRouter\\": "src/",
+            "App\\": "app/"
+        }
+    },
+        "require": {
+            "php": ">=8.0"
     }
-  ],
-  "require": {
-    "php": ">=8.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "SimpleRouter\\": "src/",
-      "App\\": "app/"
-    }
-  }
 }
