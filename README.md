@@ -13,10 +13,10 @@
 use \SimpleRouter\Router;
 use \SimpleRouter\Request;
 
-require __DIR__ . 'vendor/autoload.php';
+require __DIR__ . '\vendor/autoload.php';
 
 // init router
-$router::init();
+$router = Router::init();
 // setup routes
 require_once 'routes.php';
 // execute router

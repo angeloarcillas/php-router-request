@@ -27,7 +27,7 @@ trait RouterMethod
      * @param string $uri
      * @param array|callabled $controller
      */
-    protected function post(string $url, array|callable $controller)
+    public function post(string $url, array|callable $controller)
     {
         $this->addRoute($url, $controller, method: "POST");
     }
@@ -38,7 +38,7 @@ trait RouterMethod
      * @param string $uri
      * @param array|callabled $controller
      */
-    protected function put(string $url, array|callable $controller)
+    public function put(string $url, array|callable $controller)
     {
         $this->addRoute($url, $controller, method: "PUT");
     }
@@ -49,7 +49,7 @@ trait RouterMethod
      * @param string $uri
      * @param array|callabled $controller
      */
-    protected function patch(string $url, array|callable $controller)
+    public function patch(string $url, array|callable $controller)
     {
         $this->addRoute($url, $controller, method: "PATCH");
     }
@@ -60,7 +60,7 @@ trait RouterMethod
      * @param string $uri
      * @param array|callabled $controller
      */
-    protected function delete(string $url, array|callable $controller)
+    public function delete(string $url, array|callable $controller)
     {
         $this->addRoute($url, $controller, method: "DELETE");
     }
